@@ -9,7 +9,8 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "lint": "eslint.",
-    "format": "eslint . --fix"
+    "format": "eslint . --fix",
+    "test": "vitest"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^2.6.3",
