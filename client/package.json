@@ -1,15 +1,19 @@
 {
   "name": "nuxt-app",
-  "private": true,
   "type": "module",
+  "private": true,
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "lint": "eslint.",
+    "format": "eslint . --fix"
   },
   "devDependencies": {
+    "@antfu/eslint-config": "^2.6.3",
+    "eslint": "npm:eslint-ts-patch@^8.56.0-0",
     "nuxt": "^3.9.3",
     "vue": "^3.4.14",
     "vue-router": "^4.2.5"
