@@ -9,7 +9,8 @@ export default defineNuxtConfig({
     },
   },
   modules: [
-    'nuxt-vitest',
+    '@nuxt/test-utils/module',
     '@pinia/nuxt',
+    'nuxt-icon',
   ],
 })

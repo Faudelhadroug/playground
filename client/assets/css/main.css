@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  .inputText {
+    @apply border-2 border-red-950 w-full 
+  }
+  .w-container {
+    @apply px-[16px] xl:px-[128px];
+  }
+  .flex-center {
+    @apply flex justify-center items-center;
+  }
+}
