@@ -117,7 +117,7 @@ function useSignUp() {
           <InfoValidationInput :condition="usernameLengthValidation">
             Username: 4-18 characters.
           </InfoValidationInput>
-          <label for="password">Password</label>
+          <label for="password" class="pt-2">Password</label>
           <input id="password" v-model="passwordUser" class="inputText" type="password">
           <InfoValidationInput :condition="passwordLengthValidation">
             Password: 8-32 characters
@@ -125,7 +125,7 @@ function useSignUp() {
           <InfoValidationInput :condition="passwordVarietyValidation">
             Password includes minimum two of the following: letter, number, or symbol.
           </InfoValidationInput>
-          <label for="confirmPassword">Confirmation password</label>
+          <label for="confirmPassword" class="pt-2">Confirmation password</label>
           <input id="confirmPassword" v-model="confirmationPasswordUser" class="inputText" type="password">
           <InfoValidationInput :condition="confirmationPasswordValidation">
             Confirmation password must match the password.
