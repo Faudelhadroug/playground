@@ -115,20 +115,20 @@ function useSignUp() {
           <label for="pseudo">Username</label>
           <input id="pseudo" v-model="username" class="inputText" type="text">
           <InfoValidationInput :condition="usernameLengthValidation">
-            Pseudo must be between 4-18 characters.
+            Username: 4-18 characters.
           </InfoValidationInput>
           <label for="password">Password</label>
           <input id="password" v-model="passwordUser" class="inputText" type="password">
           <InfoValidationInput :condition="passwordLengthValidation">
-            Must be 8 characters long with a maximum of 32 characters.
+            Password: 8-32 characters
           </InfoValidationInput>
           <InfoValidationInput :condition="passwordVarietyValidation">
-            Password includes two of the following: letter, number, or symbol.
+            Password includes minimum two of the following: letter, number, or symbol.
           </InfoValidationInput>
           <label for="confirmPassword">Confirmation password</label>
           <input id="confirmPassword" v-model="confirmationPasswordUser" class="inputText" type="password">
           <InfoValidationInput :condition="confirmationPasswordValidation">
-            The confirmation password match with the password.
+            Confirmation password must match the password.
           </InfoValidationInput>
           <div class="flex-center pt-4">
             <input type="submit" class="bg-gray-700 text-white px-4 py-2 rounded-xl" value="Sign up" :disabled="!validationSignUp()" :class="[validationSignUp() ? 'cursor-pointer' : 'cursor-not-allowed']" @click="userSignUp()">
