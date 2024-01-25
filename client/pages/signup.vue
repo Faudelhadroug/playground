@@ -1,54 +1,82 @@
 <script setup lang="ts">
-const pseudoUser = ref('')
-const pseudoLengthValidation = ref(false)
-watch(pseudoUser, (newPseudoUser) => {
-  checkPseudoLength(newPseudoUser)
-})
-function checkPseudoLength(pseudo: string): boolean {
-  if (!pseudo || pseudo.length < 4 || pseudo.length > 18)
-    return pseudoLengthValidation.value = false
-  return pseudoLengthValidation.value = true
+
+const { pseudoUser, pseudoLengthValidation, } = usePseudoVerification()
+function usePseudoVerification(){
+  const pseudoUser = ref('')
+  const pseudoLengthValidation = ref(false)
+
+  watch(pseudoUser, (newPseudoUser) => {
+    checkPseudoLength(newPseudoUser)
+  })
+
+  function checkPseudoLength(pseudo: string): boolean {
+    if (!pseudo || pseudo.length < 4 || pseudo.length > 18)
+      return pseudoLengthValidation.value = false
+    return pseudoLengthValidation.value = true
+  }
+  return {
+    pseudoUser,
+    pseudoLengthValidation,
+  }
 }
 
-const passwordUser = ref('')
-const passwordLengthValidation = ref(false)
-const passwordVarietyValidation = ref(false)
-const passwordValidation = ref(false)
+const { passwordUser, passwordLengthValidation, passwordVarietyValidation, } = usePasswordVerification()
+function usePasswordVerification(){
+  const passwordUser = ref('')
+  const passwordLengthValidation = ref(false)
+  const passwordVarietyValidation = ref(false)
+  const passwordValidation = ref(false)
 
-watch(passwordUser, (newPasswordUser) => {
-  checkPasswordLength(newPasswordUser)
-  checkPasswordVariety(newPasswordUser)
-  confirmationMatchVerification(newPasswordUser, confirmationPasswordUser.value)
-  if(passwordLengthValidation.value && passwordVarietyValidation.value) passwordValidation.value = true
-})
+  watch(passwordUser, (newPasswordUser) => {
+    checkPasswordLength(newPasswordUser)
+    checkPasswordVariety(newPasswordUser)
+    confirmationMatchVerification(newPasswordUser, confirmationPasswordUser.value)
+    if(passwordLengthValidation.value && passwordVarietyValidation.value) passwordValidation.value = true
+  })
 
-function checkPasswordLength(password: string): boolean {
-  if (password.length < 8 || password.length > 32)
-    return passwordLengthValidation.value = false
-  return passwordLengthValidation.value = true
+  function checkPasswordLength(password: string): boolean {
+    if (password.length < 8 || password.length > 32)
+      return passwordLengthValidation.value = false
+    return passwordLengthValidation.value = true
+  }
+
+  function checkPasswordVariety(password: string): boolean {
+    if(!password) return false
+    const options = [
+      /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/,
+      /[a-zA-Z]/,
+      /[0-9]/,
+    ]
+    const count = options.reduce((acc, option) => acc + (option.test(password) ? 1 : 0), 0)
+    return count >= 2 ? passwordVarietyValidation.value = true : passwordVarietyValidation.value = false 
+  }
+  return {
+    passwordUser,
+    passwordLengthValidation,
+    passwordVarietyValidation,
+  }
 }
 
-function checkPasswordVariety(password: string): boolean {
-  if(!password) return false
-  const options = [
-    /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/,
-    /[a-zA-Z]/,
-    /[0-9]/,
-  ]
-  const count = options.reduce((acc, option) => acc + (option.test(password) ? 1 : 0), 0)
-  return count >= 2 ? passwordVarietyValidation.value = true : passwordVarietyValidation.value = false 
+const { confirmationPasswordUser, confirmationMatchPassword, confirmationMatchVerification, } = useConfirmationPasswordVerification()
+function useConfirmationPasswordVerification(){
+  const confirmationPasswordUser = ref('')
+  const confirmationMatchPassword = ref(false)
+  watch(confirmationPasswordUser, (newConfirmationPasswordUser) => {
+    confirmationMatchVerification(passwordUser.value, newConfirmationPasswordUser)
+  })
+  
+  function confirmationMatchVerification(password: string | Ref<string>, confirmationPassword:  string | Ref<string>){
+    if(!password || !confirmationPassword || password !== confirmationPassword) return confirmationMatchPassword.value = false
+    return confirmationMatchPassword.value = true
+  }
+
+  return {
+    confirmationPasswordUser,
+    confirmationMatchPassword,
+    confirmationMatchVerification,
+  }
 }
 
-const confirmationPasswordUser = ref('')
-const confirmationMatchPassword = ref(false)
-watch(confirmationPasswordUser, (newConfirmationPasswordUser) => {
-  confirmationMatchVerification(passwordUser.value, newConfirmationPasswordUser)
-})
-
-function confirmationMatchVerification(password: string | Ref<string>, confirmationPassword:  string | Ref<string>){
-  if(!password || !confirmationPassword || password !== confirmationPassword) return confirmationMatchPassword.value = false
-  return confirmationMatchPassword.value = true
-}
 </script>
 
 <template>
