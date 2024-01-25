@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { Ref } from 'vue'
+
 const { username, usernameLengthValidation } = useUsernameVerification()
 function useUsernameVerification() {
   const username = ref('')
@@ -28,7 +30,7 @@ function usePasswordVerification() {
   const confirmationPasswordUser = ref('')
   const confirmationPasswordValidation = ref(false)
 
-  watch(passwordUser, (newPasswordUser) => {
+  watch(passwordUser, (newPasswordUser: string) => {
     checkPasswordLength(newPasswordUser)
     checkPasswordVariety(newPasswordUser)
     confirmationMatchVerification(newPasswordUser, confirmationPasswordUser.value)
@@ -86,9 +88,8 @@ function useSignUp() {
   }
 
   function userSignUp() {
-    // TryCatch signup users
     try {
-
+      // Logic signup
     }
     catch (error) {
       errorSignUp.value = true
