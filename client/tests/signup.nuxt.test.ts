@@ -50,9 +50,6 @@ describe('checkPasswordVariety', () => {
   it('should return false only string', () => {
     expect(checkPasswordVariety('aaaaa')).toBe(false)
   })
-  it('should return false only string', () => {
-    expect(checkPasswordVariety('aaaaa')).toBe(false)
-  })
   it('should return false only number', () => {
     expect(checkPasswordVariety('412')).toBe(false)
   })
@@ -87,14 +84,15 @@ function checkPasswordLength(password: string): boolean {
 }
 
 function checkPasswordVariety(password: string): boolean {
-  if(!password) return false
+  if (!password)
+    return false
   const options = [
     /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/,
     /[a-zA-Z]/,
     /[0-9]/,
   ]
   const count = options.reduce((acc, option) => acc + (option.test(password) ? 1 : 0), 0)
-  return count >= 2 ? true : false
+  return count >= 2
 }
 /*
 
