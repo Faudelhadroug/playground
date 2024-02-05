@@ -38,7 +38,7 @@ export class AuthController {
         // secure: true,
         // sameSite: 'strict',
       });
-      return res.send({ acces_token: accessToken });
+      return res.send({ access_token: accessToken });
     } catch (error) {
       // Handle the error, e.g., by sending an unauthorized response
       res.status(HttpStatus.UNAUTHORIZED).send({ message: error.message });
@@ -62,7 +62,7 @@ export class AuthController {
       // sameSite: 'strict',
     });
 
-    return res.send({ acces_token: newAccessToken });
+    return res.send({ access_token: newAccessToken });
   }
 
   @UseGuards(AuthGuard)
