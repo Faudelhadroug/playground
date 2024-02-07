@@ -15,7 +15,7 @@ export class AuthGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     const token = this.extractTokenFromHeader(request);
     if (!token) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException('Request does not contain a token');
     }
     try {
       const payload = await this.jwtService.verifyAsync(token, {
@@ -25,7 +25,9 @@ export class AuthGuard implements CanActivate {
       // so that we can access it in our route handlers
       request['user'] = payload;
     } catch {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException(
+        'Your token is invalid or expired. Please log in again.',
+      );
     }
     return true;
   }
