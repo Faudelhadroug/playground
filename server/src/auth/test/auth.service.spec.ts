@@ -4,7 +4,7 @@ import { JwtService } from '@nestjs/jwt';
 import { BadRequestException } from '@nestjs/common';
 import { UsersService } from '../../users/users.service';
 import { mockJwtService } from '../__mocks__/jwt.service';
-import { mockUsersService } from '../__mocks__/users.service';
+import { mockUsersService } from '../../users/__mocks__/users.service';
 
 describe('AuthService', () => {
   let authService: AuthService;
