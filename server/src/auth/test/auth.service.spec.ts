@@ -3,27 +3,11 @@ import { AuthService } from '../auth.service';
 import { JwtService } from '@nestjs/jwt';
 import { BadRequestException } from '@nestjs/common';
 import { UsersService } from '../../users/users.service';
+import { mockJwtService } from '../__mocks__/jwt.service';
+import { mockUsersService } from '../__mocks__/users.service';
 
 describe('AuthService', () => {
   let authService: AuthService;
-
-  const mockUsersService = {
-    getUserByUsername: jest.fn().mockResolvedValue({
-      username: 'gala',
-      password: 'admin123',
-    }),
-  };
-
-  const mockJwtService = {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    sign: jest.fn().mockImplementation((_payload) => {
-      return 'mocked_token';
-    }),
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    verifyAsync: jest.fn().mockImplementation(async (_token) => {
-      return { username: 'gala' };
-    }),
-  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
