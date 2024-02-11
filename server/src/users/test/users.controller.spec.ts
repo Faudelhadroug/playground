@@ -5,21 +5,19 @@ import { UsersService } from '../users.service';
 import { userStub } from './stubs/user.stub';
 import { User } from '../schemas/user.schema';
 import { UpdateUserDto } from '../dto/update-user.dto';
-
-jest.mock('../users.service');
+import { mockUsersService } from '../__mocks__/users.service';
 
 describe('UsersController', () => {
   let usersController: UsersController;
-  let usersService: UsersService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [UsersController],
-      providers: [UsersService],
+      providers: [{ provide: UsersService, useValue: mockUsersService }],
     }).compile();
 
     usersController = module.get<UsersController>(UsersController);
-    usersService = module.get<UsersService>(UsersService);
+    //usersService = module.get<UsersService>(UsersService);
     jest.clearAllMocks();
   });
 
@@ -32,7 +30,7 @@ describe('UsersController', () => {
       });
 
       test('then it should call usersSerivce', () => {
-        expect(usersService.getUserByUsername).toHaveBeenCalledWith(
+        expect(mockUsersService.getUserByUsername).toHaveBeenCalledWith(
           userStub().username,
         );
       });
@@ -52,7 +50,7 @@ describe('UsersController', () => {
       });
 
       test('then it should call usersService', () => {
-        expect(usersService.getUsers).toHaveBeenCalled();
+        expect(mockUsersService.getUsers).toHaveBeenCalled();
       });
 
       test('then it should return all Users', () => {
@@ -75,7 +73,7 @@ describe('UsersController', () => {
       });
 
       test('then it should call usersService', () => {
-        expect(usersService.createUser).toHaveBeenCalledWith(createUserDto);
+        expect(mockUsersService.createUser).toHaveBeenCalledWith(createUserDto);
       });
 
       test('then it should return created new User saved', () => {
@@ -101,7 +99,7 @@ describe('UsersController', () => {
       });
 
       test('then it should call usersService', () => {
-        expect(usersService.updateUser).toHaveBeenCalledWith(
+        expect(mockUsersService.updateUser).toHaveBeenCalledWith(
           userStub().username,
           updateUserDto,
         );
