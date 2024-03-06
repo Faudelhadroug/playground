@@ -65,6 +65,18 @@ export class AuthController {
     return res.send({ access_token: newAccessToken });
   }
 
+  @HttpCode(HttpStatus.OK)
+  @Post('logout')
+  async logout(@Res({ passthrough: true }) res: Response) {
+    res.clearCookie('refreshToken', {
+      httpOnly: true,
+    });
+
+    return {
+      message: 'success',
+    };
+  }
+
   @UseGuards(AuthGuard)
   @Get('profile')
   getProfile(@Req() req) {
