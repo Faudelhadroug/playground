@@ -76,7 +76,7 @@ function usePasswordVerification() {
   }
 }
 
-const { validationSignUp, userSignUp } = useSignUp()
+const { validationSignUp, userSignUp, errorSignUp, errorMessage } = useSignUp()
 function useSignUp() {
   const errorSignUp = ref(false)
   const errorMessage = ref('')
@@ -87,11 +87,22 @@ function useSignUp() {
     return true
   }
 
-  function userSignUp() {
+  async function userSignUp() {
+    const authStore = useAuthStore()
     try {
-      // Logic signup
+      if (!validationSignUp())
+        throw new Error('Credentials have error')
+      await useFetch('http://localhost:3001/users', {
+        method: 'POST',
+        body: {
+          username: username.value,
+          password: passwordUser.value,
+        },
+      })
+      await authStore.login(username.value, passwordUser.value)
     }
-    catch (error) {
+    catch (error: any | Error | unknown) {
+      errorMessage.value = error.message
       errorSignUp.value = true
     }
   }
@@ -109,7 +120,7 @@ function useSignUp() {
   <div class="grid xl:grid-cols-2 h-screen text-emerald-950 text-lg">
     <div class="w-container pt-[64px] bg-emerald-800 pb-8 flex-center">
       <div>
-        <h1 class="font-bold uppercase text-center xl:text-left text-green-300">
+        <h1 class="font-bold uppercase text-center xl:text-left text-green-300 text-5xl pb-[16px]">
           Sign up
         </h1>
         <form class="grid gap-y-[8px] bg-emerald-300 px-12 py-8 rounded-md" @submit.prevent>
@@ -131,12 +142,17 @@ function useSignUp() {
           <InfoValidationInput :condition="confirmationPasswordValidation">
             Confirmation password must match the password.
           </InfoValidationInput>
-          <div class="flex-center pt-4">
-            <input type="submit" class="bg-gray-700 text-white px-4 py-2 rounded-xl" value="Sign up" :disabled="!validationSignUp()" :class="[validationSignUp() ? 'cursor-pointer' : 'cursor-not-allowed']" @click="userSignUp()">
+          <div v-if="errorSignUp" class="text-red-700 text-center font-bold">
+            <p>{{ errorMessage }}</p>
+          </div>
+          <div class="flex-center">
+            <input id="signup" type="submit" class="bg-gray-700 text-white px-4 py-2 rounded-xl" value="Sign up" :disabled="!validationSignUp()" :class="[validationSignUp() ? 'cursor-pointer' : 'cursor-not-allowed']" @click="userSignUp()">
           </div>
         </form>
       </div>
     </div>
-    <div class="hidden xl:block bg-red-400 h-screen" />
+    <div class="hidden xl:block h-screen">
+      <NuxtImg src="../public/abstract01.jpg" alt="Abstract decoration" class="h-full w-full absolute" />
+    </div>
   </div>
 </template>
